@@ -195,7 +195,7 @@ def process_video(video_path, output_path):
 def main():
     parser = argparse.ArgumentParser(description="Process a video and save the result")
     parser.add_argument("\'\\path\\to\\input_video.mp4\'", help="Path to the input video file")
-    parser.add_argument("\'\\path\\to\\output_image\'", help="Path to save the output image")
+    parser.add_argument("\'\\path\\to\\output_image.png\'", help="Path to save the output image")
     args = parser.parse_args()
 
     process_video(args.input_video, args.output_image)
