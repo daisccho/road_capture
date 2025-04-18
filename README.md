@@ -45,10 +45,10 @@ pip install -r .\src\requirements.txt
 ## Использование
 
 ```bash
-python .\src\main.py '\path\to\input_video.mp4' '\path\to\output_image'
+python .\src\main.py input_video output_image
 
 # Аргументы:
-#   '\path\to\input_video.mp4'  Путь к видео
-#   '\path\to\output_image'     Путь для сохранения результирующего фото
+#  input_video   Путь к видео  
+#  output_image  Путь для сохранения результирующего изображения
 ```
 Проект уже содержит четыре предложенных видео, так что можно воспользоваться ими.
