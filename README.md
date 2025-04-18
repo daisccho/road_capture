@@ -47,8 +47,8 @@ pip install -r .\src\requirements.txt
 ```bash
 python .\src\main.py input_video output_image
 
-Аргументы:
-  input_video   Путь к видео
-  output_image  Путь для сохранения результирующего фото
+# Аргументы:
+#   input_video   Путь к видео
+#   output_image  Путь для сохранения результирующего фото
 ```
 Проект уже содержит четыре предложенных видео, так что можно воспользоваться ими
