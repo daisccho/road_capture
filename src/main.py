@@ -193,9 +193,9 @@ def process_video(video_path, output_path):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Process a video and save the result")
-    parser.add_argument("input_video", help="Path to the input video file")
-    parser.add_argument("output_image", help="Path to save the output image")
+    parser = argparse.ArgumentParser(description="Обрабатывает видео и генерирует дорожное полотно")
+    parser.add_argument("input_video", help="Путь к видео")
+    parser.add_argument("output_image", help="Путь для сохранения результирующего изображения")
     args = parser.parse_args()
 
     process_video(args.input_video, args.output_image)
