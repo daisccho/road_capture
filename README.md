@@ -64,13 +64,16 @@ python .\src\main.py input_video output_image
 
 В итоге мы получаем полигон, выделяющий интересующий нас участок на видео. Мы знаем координаты этого полигона, поэтому мы можем изменить его перспективу с помощью `cv.warpPerspective()`. 
 <div align="center">
-  <img src="explain/img4.png"/>
+  <a href="./">
+    <img src="./explain/img4.png" width="50%"/>
+  </a>
 </div>
 Остается только объединить поток кадров в одно изображение со смещением, чтобы получить полное полотно дороги.
 <div align="center">
-  <img src="explain/img5.png"/>
+  <a href="./">
+    <img src="./explain/img5.png" width="50%"/>
+  </a>
 </div>
-
 ## Результаты
 
 Для первых трёх видео (redrock1, redrock2, redrock4) программа генерирует стабильные карты дорог (насколько это позволяет моя реализация).<br/> 
