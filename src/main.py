@@ -147,7 +147,7 @@ def process_video(video_path, output_path):
     frames_total = int(video.get(cv.CAP_PROP_FRAME_COUNT))
     cur_frame = 1
     delay = 1
-    delta = 20
+    delta = 12
 
     if not video.isOpened():
         print("Couldn't fetch the video")
@@ -168,14 +168,12 @@ def process_video(video_path, output_path):
             try:
                 result, previous_lines, polygon_points = adapt_region_of_interest(frame_copy, previous_lines)
                 warped = perspective_transform(frame, polygon_points)
+                to_paste = warped[warped.shape[0]-delta:warped.shape[0], :warped.shape[1]]
 
                 if result_image is None:
-                    black_block = np.zeros((delta * (frames_total - 1), warped.shape[1], 3), dtype=np.uint8)
-                    result_image = np.copy(warped)
-                    result_image = np.vstack((black_block, result_image))
+                    result_image = np.copy(to_paste)
                 elif cur_frame < frames_total:
-                    y_offset = (warped.shape[0] + delta * (frames_total - 1)) - (warped.shape[0] + cur_frame * delta)
-                    result_image[y_offset:y_offset + warped.shape[0], :warped.shape[1]] = warped
+                    result_image = np.vstack((to_paste, result_image))
 
                 pbar.update(1)
 
