@@ -37,7 +37,7 @@ python -m venv venv
 ```
 - Устанавливаем библиотеки:
 ```bash
-pip install -r .\src\requirements.txt
+pip install -r .\requirements.txt
 ```
 
 ## Использование
