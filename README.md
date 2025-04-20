@@ -32,7 +32,6 @@ git clone https://github.com/daisccho/road_capture.git
 ```bash
 cd .\road_capture\
 python -m venv venv
-# Windows
 .\venv\Scripts\activate.bat
 ```
 - Устанавливаем библиотеки:
@@ -46,8 +45,8 @@ pip install -r .\requirements.txt
 python .\src\main.py input_video output_image
 
 # Аргументы:
-#  input_video   Путь к видео (указывать вместе с названием видео, например, '.\media\redrock1.png'
-#  output_image  Путь для сохранения результирующего изображения (указывать вместе с названием файла, например, '.\results\result.png'
+#  input_video   Путь к видео (например, .\media\redrock1.mp4)
+#  output_image  Путь для сохранения результирующего изображения (например, .\results\result.png)
 ```
 Проект уже содержит четыре предложенных видео, так что можно воспользоваться ими.
 
