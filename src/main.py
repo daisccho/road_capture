@@ -69,16 +69,7 @@ def reflect_line_vertically(line, image):
     return np.array([x1_reflected, y1, x2_reflected, y2])
 
 
-def display_lines(image, lines):
-    line_image = np.zeros_like(image)
-    if lines is not None:
-        for x1, y1, x2, y2 in lines:
-            cv.line(line_image, (x1, y1), (x2, y2), (255, 255, 255), 10)
-    return line_image
-
-
-def display_polygon(image, lines):
-    line_image = np.zeros_like(image)
+def display_polygon(image, lines, show_result):
 
     if lines is not None:
         left_line, right_line = lines
@@ -94,9 +85,12 @@ def display_polygon(image, lines):
         x_right_lower = int(x1_right + (y_lower - y1_right) * (x2_right - x1_right) / (y2_right - y1_right))
 
         polygon_points = np.array([[(x_left_upper, y_upper), (x_right_upper, y_upper), (x_right_lower, y_lower), (x_left_lower, y_lower)]], np.int32)
-        cv.polylines(line_image, polygon_points, isClosed=True, color=(255, 255, 255), thickness=10)
-
-    return line_image, polygon_points
+        if show_result:
+            line_image = np.zeros_like(image)
+            cv.polylines(line_image, polygon_points, isClosed=True, color=(255, 255, 255), thickness=10)
+            return line_image, polygon_points
+        else:
+            return None, polygon_points
 
 
 def region_of_interest(image):
@@ -112,7 +106,7 @@ def region_of_interest(image):
     return roi
 
 
-def adapt_region_of_interest(image, previous_lines):
+def adapt_region_of_interest(image, previous_lines, show_result=False):
     frame_copy = cv.GaussianBlur(image, (5, 5), 1)
     hls = cv.cvtColor(frame_copy, cv.COLOR_RGB2HLS)
     lower_white = np.array([0, 150, 0])
@@ -131,9 +125,13 @@ def adapt_region_of_interest(image, previous_lines):
 
     lines = cv.HoughLinesP(adaptive_thresh, 1, np.pi / 270, 90, np.array([()]), minLineLength=50, maxLineGap=5)
     averaged_lines, previous_lines = average_slope_intercept(adaptive_thresh, lines, previous_lines[0], previous_lines[1])
-    line_image, polygon_points = display_polygon(frame_copy, averaged_lines)
-    result = cv.addWeighted(frame_copy, 0.8, line_image, 0.5, 1)
-    return result, previous_lines, polygon_points
+    if show_result:
+        line_image, polygon_points = display_polygon(frame_copy, averaged_lines, show_result)
+        result = cv.addWeighted(frame_copy, 0.8, line_image, 0.5, 1)
+        return result, previous_lines, polygon_points
+    else:
+        _, polygon_points = display_polygon(frame_copy, averaged_lines, show_result)
+        return None, previous_lines, polygon_points
 
 
 def perspective_transform(image, polygon_points, target_points=np.array([[0, 0], [600, 0], [600, 800], [0, 800]], dtype=np.float32)):
@@ -145,7 +143,6 @@ def perspective_transform(image, polygon_points, target_points=np.array([[0, 0],
 def process_video(video_path, output_path):
     video = cv.VideoCapture(video_path)
     frames_total = int(video.get(cv.CAP_PROP_FRAME_COUNT))
-    cur_frame = 1
     delay = 1
     delta = 12
 
@@ -157,13 +154,12 @@ def process_video(video_path, output_path):
     result_image = None
 
     with tqdm(total=frames_total) as pbar:
-        while cur_frame <= frames_total:
+        while True:
             ret, frame = video.read()
             if not ret:
                 break
 
             frame_copy = np.copy(frame)
-            cur_frame += 1
 
             try:
                 result, previous_lines, polygon_points = adapt_region_of_interest(frame_copy, previous_lines)
@@ -171,8 +167,8 @@ def process_video(video_path, output_path):
                 to_paste = warped[warped.shape[0]-delta:warped.shape[0], :warped.shape[1]]
 
                 if result_image is None:
-                    result_image = np.copy(to_paste)
-                elif cur_frame < frames_total:
+                    result_image = to_paste
+                else:
                     result_image = np.vstack((to_paste, result_image))
 
                 pbar.update(1)
