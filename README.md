@@ -18,7 +18,6 @@
 Использованные библиотеки:
 - opencv-python
 - numpy
-- argparse
 - tqdm
 ---
 
