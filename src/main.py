@@ -65,8 +65,8 @@ def average_slope_intercept(image, lines, prev_left_line, prev_right_line):
 def reflect_line_vertically(line, image):
     width = image.shape[1]
     x1, y1, x2, y2 = line
-    x1_reflected = width + x1
-    x2_reflected = width + x2
+    x1_reflected = width - x1
+    x2_reflected = width - x2
     return np.array([x1_reflected, y1, x2_reflected, y2])
 
 
