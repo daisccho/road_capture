@@ -5,6 +5,7 @@ from tqdm import tqdm
 
 
 def make_coordinates(image, line_parameters):
+    print(line_parameters)
     slope, intercept = line_parameters
     y1 = image.shape[0]
     y2 = int(y1 * (3 / 5))
@@ -146,6 +147,9 @@ def process_video(video_path, output_path):
     delay = 1
     delta = 12
 
+    # cv.namedWindow("Frame", cv.WINDOW_NORMAL)
+    # cv.resizeWindow('Frame', 1280, 720)
+
     if not video.isOpened():
         print("Couldn't fetch the video")
         return
@@ -159,6 +163,7 @@ def process_video(video_path, output_path):
             if not ret:
                 break
 
+            # cv.imshow("Frame", frame)
             frame_copy = np.copy(frame)
 
             try:
@@ -177,7 +182,7 @@ def process_video(video_path, output_path):
                 print('Exception: ', e)
                 pass
 
-            if cv.waitKey(delay) == 27:
+            if cv.waitKey(0) == 27:
                 break
 
     cv.imwrite(output_path, result_image)
